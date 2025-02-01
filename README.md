@@ -1,3 +1,17 @@
 # Elliptic Curve Cryptography
- trying to implement basic ECC , better compared to RSA (still building!!)
+This project aims to implement basic elliptic Curve Cryptography (ECC) , providing to a better alternative compared to RSA
+## Description
+-ECC is a public key encryption technique based on elliptic curve theory.
+-It can be used tp create faster , smaller and more efficent cryptographic keys.
+-This repo aims to implement the fundamental aspects of ECC.
+
+## PREREQUISITES
+-GCC compiler
+
+
+
+
+
+
+
  
