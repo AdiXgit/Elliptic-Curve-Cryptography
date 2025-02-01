@@ -1,0 +1,19 @@
+CC = gcc
+CFLAGS = -Wall -Wextra -O2
+
+all: ecc_test
+
+ecc_test: field_math.o ecc.o main.o
+	$(CC) $(CFLAGS) -o ecc_test field_math.o ecc.o main.o
+
+field_math.o: src/field_math.c include/field_math.h
+	$(CC) $(CFLAGS) -c src/field_math.c
+
+ecc.o: src/ecc.c include/ecc.h include/field_math.h
+	$(CC) $(CFLAGS) -c src/ecc.c
+
+main.o: src/main.c include/ecc.h include/field_math.h
+	$(CC) $(CFLAGS) -c src/main.c
+
+clean:
+	rm -f *.o ecc_test
