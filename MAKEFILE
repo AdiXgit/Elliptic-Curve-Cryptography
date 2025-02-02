@@ -1,19 +1,19 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -O2
+CFLAGS = -Wall -Wextra
 
-all: ecc_test
+all: main.exe
 
-ecc_test: field_math.o ecc.o main.o
-	$(CC) $(CFLAGS) -o ecc_test field_math.o ecc.o main.o
+main.exe: field_math.o ec_crypto.o main.o
+	$(CC) $(CFLAGS) field_math.o ec_crypto.o main.o -o main.exe
 
-field_math.o: src/field_math.c include/field_math.h
-	$(CC) $(CFLAGS) -c src/field_math.c
+field_math.o: field_math.c field_math.h
+	$(CC) $(CFLAGS) -c field_math.c
 
-ecc.o: src/ecc.c include/ecc.h include/field_math.h
-	$(CC) $(CFLAGS) -c src/ecc.c
+ec_crypto.o: ec_crypto.c field_math.h
+	$(CC) $(CFLAGS) -c ec_crypto.c
 
-main.o: src/main.c include/ecc.h include/field_math.h
-	$(CC) $(CFLAGS) -c src/main.c
+main.o: main.c field_math.h
+	$(CC) $(CFLAGS) -c main.c
 
 clean:
-	rm -f *.o ecc_test
+	rm -f *.o main.exe

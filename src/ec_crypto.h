@@ -1,26 +1,17 @@
-#ifndef ECC_H
-#define ECC_h
+#ifndef EC_CRYPTO_H
+#define EC_CRYPTO_H
 
-#include<stdint.h>
-#include "field_math.h" //for modular arithmetic
-//defining the eliptic curve parameters
+#include "field_math.h"
 
-typedef struct{
-    int x;int y;
+typedef struct {
+    int x;
+    int y;
+    int is_infinity; // ✅ Ensure all instances of this struct match
 } ec_point;
 
-//curve equation: y^2 = x^3 + ax + b
-//curve parameters
-#define curve_a 1
-#define curve_b 1
-
-//a point at infinity
-extern ec_point POINT_INFINITY;
-
-//function declarations
-ec_point ecc_add(ec_point p,ec_point q);
+// Function declarations
+ec_point ecc_add(ec_point p, ec_point q);
 ec_point ecc_double(ec_point p);
-ec_point ecc_scalar_mul(int k,ec_point p);
+ec_point ecc_scalar_mult(ec_point p, int k); // ✅ Ensure function declaration is correct
 
-
-#endif /* ECC_H */
+#endif
