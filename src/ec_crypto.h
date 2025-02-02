@@ -6,12 +6,12 @@
 typedef struct {
     int x;
     int y;
-    int is_infinity; // ✅ Ensure all instances of this struct match
+    int is_infinity; 
 } ec_point;
 
 // Function declarations
 ec_point ecc_add(ec_point p, ec_point q);
 ec_point ecc_double(ec_point p);
-ec_point ecc_scalar_mult(ec_point p, int k); // ✅ Ensure function declaration is correct
+ec_point ecc_scalar_mult(ec_point p, int k);
 
 #endif

@@ -31,7 +31,7 @@ int mod_exp(int base, int exp) {
 
 // Modular inverse
 int mod_inv(int a) {
-    int m = PRIME;  // Store PRIME in a mutable variable
+    int m = PRIME;  
     int t, q;
     int x0 = 0, x1 = 1;
 
@@ -41,7 +41,7 @@ int mod_inv(int a) {
         q = a / m;
         t = m;
 
-        m = a % m;  // Use 'm' instead of modifying 'PRIME'
+        m = a % m;  
         a = t;
 
         t = x0;
