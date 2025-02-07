@@ -2,6 +2,8 @@
 #define curve_a 2
 #define curve_b 9
 
+ec_point G = {5,1};
+
 ec_point ecc_add(ec_point p, ec_point q) {
     if (p.is_infinity) return q;
     if (q.is_infinity) return p;
