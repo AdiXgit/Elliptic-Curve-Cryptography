@@ -9,7 +9,8 @@ int main() {
     srand(time(NULL));
 
     // Define an elliptic curve with a generator point
-    EllipticCurve curve = {2, 3, 97, {3, 6}};
+    EllipticCurve curve = {2, 3, 97, {3, 6, 0}};
+
 
     // Check if G is valid
     if (!is_point_on_curve(curve, curve.G)) {
