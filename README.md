@@ -1,6 +1,5 @@
 # Elliptic Curve Cryptography
 This project aims to implement basic Elliptic Curve Cryptography (ECC) , providing to a better alternative compared to RSA (STILL BUILDING :| )
-![ECC Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Elliptic_curve.svg/1200px-Elliptic_curve.svg.png)
 
 ## Overview
 
