@@ -9,7 +9,8 @@ typedef struct {
 typedef struct {
     int a;
     int b;
-    int p; // Prime number
+    int p;  // Prime number
+    Point G; // Generator point
 } EllipticCurve;
 
 int is_point_on_curve(EllipticCurve curve, Point point);

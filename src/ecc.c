@@ -10,29 +10,41 @@ int is_point_on_curve(EllipticCurve curve, Point point) {
 }
 
 // Function to add two points on the elliptic curve
+// Function to add two points on the elliptic curve
 Point point_add(Point p1, Point p2, EllipticCurve curve) {
     if (!is_point_on_curve(curve, p1) || !is_point_on_curve(curve, p2)) {
         fprintf(stderr, "Error: One of the points is not on the curve.\n");
         exit(EXIT_FAILURE);
     }
 
-    if (p1.x == 0 && p1.y == 0) return p2; // Identity point
-    if (p2.x == 0 && p2.y == 0) return p1; // Identity point
+    // Identity point cases
+    if (p1.x == 0 && p1.y == 0) return p2; 
+    if (p2.x == 0 && p2.y == 0) return p1; 
+
+    // If p1 and p2 are inverses, return identity point (0,0)
+    if (p1.x == p2.x && p1.y != p2.y) {
+        return (Point){0, 0}; 
+    }
 
     int m;
     if (p1.x == p2.x && p1.y == p2.y) {
         // Point doubling
         m = (3 * p1.x * p1.x + curve.a) * mod_inverse(2 * p1.y, curve.p) % curve.p;
     } else {
-        m = (p2.y - p1.y) * mod_inverse(p2.x - p1.x, curve.p) % curve.p;
+        // Regular point addition
+        int denominator = (p2.x - p1.x) % curve.p;
+        if (denominator < 0) denominator += curve.p; // Handle negative modulo
+        m = (p2.y - p1.y) * mod_inverse(denominator, curve.p) % curve.p;
     }
 
     int x3 = (m * m - p1.x - p2.x) % curve.p;
+    if (x3 < 0) x3 += curve.p; // Ensure positive modulo
     int y3 = (m * (p1.x - x3) - p1.y) % curve.p;
+    if (y3 < 0) y3 += curve.p; 
 
-    Point result = { (x3 + curve.p) % curve.p, (y3 + curve.p) % curve.p };
-    return result;
+    return (Point){x3, y3};
 }
+
 
 // Function to multiply a point by a scalar
 Point point_multiply(Point p, int scalar, EllipticCurve curve) {
