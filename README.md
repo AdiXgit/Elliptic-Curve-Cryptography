@@ -43,6 +43,8 @@ Welcome to the **Elliptic Curve Cryptography (ECC)** project! This project imple
    ```bash
    git clone https://github.com/yourusername/ecc_project.git
    cd ecc_project/src
+   ```
+   
 
 
 
