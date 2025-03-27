@@ -1,16 +1,11 @@
-//implementation of keygeneration and ecdh
+#include <stdlib.h>
+#include <time.h>
 #include "keygen.h"
-int generate_pvt_key() {
-    srand(time(0));
-    return rand() % 100;
-}
 
-ec_point generate_public_key(int pvt_key){
-    ec_point g = {2,2};
-    return ecc_scalar_mult(g, pvt_key);
+// Function to generate a key pair
+void generate_keypair(EllipticCurve curve, int *private_key, Point *public_key) {
+    // Generate a random private key
+    *private_key = rand() % (curve.p - 1) + 1; // Ensure it's non-zero
+    Point G = {3, 6}; // Example generator point (must be on the curve)
+    *public_key = point_multiply(G, *private_key, curve);
 }
-
-ec_point generate_shared_secret(int pvt_key,ec_point public_key){
-    return ecc_scalar_mult(public_key,pvt_key);
-}
-

@@ -1,34 +1,40 @@
 #include <stdio.h>
-#include "ec_crypto.h"
+#include <stdlib.h>
+#include <time.h>
+#include "ecc.h"
+#include "keygen.h"
 #include "ecdsa.h"
 
 int main() {
-    printf("Elliptic Curve Cryptography Test\n");
+    srand(time(NULL)); // Seed random number generator
 
-    // 1️⃣ Generate Keypair
-    ecdsa_keypair keypair = ecdsa_keygen();
-    printf("Private Key: %d\n", keypair.pvt_key);
-    printf("Public Key: (%d, %d)\n", keypair.public_key.x, keypair.public_key.y);
+    // Define an elliptic curve
+    EllipticCurve curve = {2, 3, 97}; // Example curve parameters
+    Point G = {3, 6}; // Example generator point (must be on the curve)
 
-    // 2️⃣ Define a message
-    const char* message = "Hello ECC!";
-    printf("Message: %s\n", message);
+    // Check if the generator point is on the curve
+    if (!is_point_on_curve(curve, G)) {
+        printf("Generator point G is not on the curve.\n");
+        return 1; // Exit if G is not valid
+    }
 
-    // 3️⃣ Sign the message
-    ecdsa_sign signature = ecdsa_sign_msg(keypair.pvt_key, message);
-    printf("Signature: (r = %d, s = %d)\n", signature.r, signature.s);
+    // Generate key pair
+    int private_key;
+    Point public_key;
+    generate_keypair(curve, &private_key, &public_key);
 
-    // 4️⃣ Verify the signature
-    int h = hash_message(message);
-    int w = mod_inv(signature.s);
-    int u1 = mod_mul(h, w);
-    int u2 = mod_mul(signature.r, w);
+    printf("Private Key: %d\n", private_key);
+    printf("Public Key: (%d, %d)\n", public_key.x, public_key.y);
 
-    ec_point P1 = ecc_scalar_mult(G, u1);
-    ec_point P2 = ecc_scalar_mult(keypair.public_key, u2);
-    ec_point P = ecc_add(P1, P2);
+    // Sign a message
+    int k = rand() % (curve.p - 1) + 1; // Random k
+    int message_hash = 42; // Example message hash
+    Signature signature = ecdsa_sign(private_key, k, curve, G, message_hash);
+    printf("Signature: (r: %d, s: %d)\n", signature.r, signature.s);
 
-    printf("Signature Valid: %s\n", (P.x == signature.r) ? "YES" : "NO");
+    // Verify the signature
+    int is_valid = ecdsa_verify(public_key, signature, message_hash, curve, G);
+    printf("Signature valid: %s\n", is_valid ? "Yes" : "No");
+
     return 0;
 }
-

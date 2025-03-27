@@ -1,39 +1,32 @@
+#include <stdlib.h>
 #include "ecdsa.h"
-#include "field_math.h"
 
-#include <string.h>
+// Function to generate a signature
+Signature ecdsa_sign(int private_key, int k, EllipticCurve curve, Point G, int message_hash) {
+    Signature sig;
+    Point R = point_multiply(G, k, curve);
+    sig.r = R.x % curve.p;
 
-int hash_message(const char*msg){
-    int hash = 0;
-    for(size_t i = 0;i<strlen(msg);i++)
-        hash = (hash+msg[i]) %PRIME;return hash;
+    // Calculate s
+    int k_inv = mod_inverse(k, curve.p - 1);
+    sig.s = (k_inv * (message_hash + private_key * sig.r)) % (curve.p - 1);
+
+    return sig;
 }
 
-//generating the key value pair
-ecdsa_keypair ecdsa_keygen(){
-    ecdsa_keypair keypair;
-    keypair.pvt_key = 10023; //you can give any secure random private key
-    //public key = private key * G(generator point)
-    keypair.public_key = ecc_scalar_mult(G, keypair.pvt_key); //check later for the g value
-    return keypair;
+// Function to verify a signature
+int ecdsa_verify(Point public_key, Signature signature, int message_hash, EllipticCurve curve, Point G) {
+    if (signature.r < 1 || signature.r >= curve.p || signature.s < 1 || signature.s >= (curve.p - 1)) {
+        return 0; // Invalid signature
+    }
+
+    int w = mod_inverse(signature.s, curve.p - 1);
+    int u1 = (message_hash * w) % (curve.p - 1);
+    int u2 = (signature.r * w) % (curve.p - 1);
+
+    Point P1 = point_multiply(G, u1, curve);
+    Point P2 = point_multiply(public_key, u2, curve);
+    Point R = point_add(P1, P2, curve);
+
+    return (R.x % curve.p) == signature.r; // Verify the signature
 }
-
-ecdsa_sign ecdsa_sign_msg(int pvt_key,const char*msg){
-    int k = 17; //you can give any secure random number
-    ec_point r = ecc_scalar_mult(G, k);;
-    int r_x = r.x;
-    int h = hash_message(msg);
-    int s = mod_mul(mod_inv(k),mod_sub(h,mod_mul(r_x,pvt_key)));
-    printf("Debug: k = %d\n", k);
-    printf("Debug: r = (%d, %d)\n", r.x, r.y);
-    printf("Debug: r_x = %d\n", r_x);
-    printf("Debug: Hash = %d\n", h);
-    printf("Debug: s = %d\n", s);
-
-
-    ecdsa_sign sign = {r_x,s};
-    return sign;
-};
-
-
-

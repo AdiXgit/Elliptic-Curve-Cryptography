@@ -1,12 +1,8 @@
 #ifndef KEYGEN_H
 #define KEYGEN_H
 
-#include <stdio.h>
-#include "ec_crypto.h"
-#include <time.h>
+#include "ecc.h"
 
-int generate_pvt_key();
-ec_point generate_public_key(int pvt_key);
-ec_point generate_shared_secret(int pvt_key, ec_point public_key);
+void generate_keypair(EllipticCurve curve, int *private_key, Point *public_key);
 
 #endif // KEYGEN_H
