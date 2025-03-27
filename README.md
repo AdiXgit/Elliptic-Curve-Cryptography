@@ -43,7 +43,30 @@ Welcome to the **Elliptic Curve Cryptography (ECC)** project! This project imple
    git clone https://github.com/yourusername/ecc_project.git
    cd ecc_project/src
    ```
-   
+
+
+### WHY ECC IS BETTER ??
+ 🔒 More Secure with Smaller Keys
+
+ -A 256-bit ECC key provides the same security as a 3072-bit RSA key.
+
+ -A 384-bit ECC key is equivalent to 7680-bit RSA.
+
+ -This means ECC is harder to break with brute force attacks.
+
+ ⚡ Faster and More Efficient
+
+ -ECC uses smaller numbers, making it faster for encryption, decryption, and signing.
+
+-RSA requires large exponentiations, which are slower.
+
+ 📉 Less Storage & Bandwidth
+
+-Smaller keys = less memory usage and faster communication.
+
+-ECC is ideal for mobile devices, IoT, and blockchain where efficiency matters.
+
+
 
 
 
